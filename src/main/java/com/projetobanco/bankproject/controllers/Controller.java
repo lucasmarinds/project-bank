@@ -1,7 +1,7 @@
 package com.projetobanco.bankproject.controllers;
 
 import com.projetobanco.bankproject.business.AccountBusiness;
-import com.projetobanco.bankproject.entitys.ContasBancarias;
+import com.projetobanco.bankproject.entitys.ContaBancaria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +23,13 @@ public class Controller {
 
 
     @GetMapping(path="/showall")
-    public  List<ContasBancarias> getAllUsers() {
+    public  List<ContaBancaria> getAllUsers() {
         return accountBusiness.findAll();
     }
 
     @GetMapping(path = "/accountid/{id}")
-    public ResponseEntity<ContasBancarias> getAccountById(@PathVariable int id){
-        Optional<ContasBancarias> contasBancarias = accountBusiness.findById(id);
+    public ResponseEntity<ContaBancaria> getAccountById(@PathVariable int id){
+        Optional<ContaBancaria> contasBancarias = accountBusiness.findById(id);
 
         if(!contasBancarias.isPresent()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
@@ -37,9 +37,9 @@ public class Controller {
         return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/contanome/{nome}")
-    public ResponseEntity<ContasBancarias> getAccountByName(@PathVariable String nome){
-        List<ContasBancarias> contasBancarias = accountBusiness.findByName(nome);
+    @GetMapping(path = "/accountname/{nome}")
+    public ResponseEntity<ContaBancaria> getAccountByName(@PathVariable String nome){
+        List<ContaBancaria> contasBancarias = accountBusiness.findByName(nome);
 
         if(contasBancarias.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
@@ -47,9 +47,9 @@ public class Controller {
         return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(path = "/contaagencia/{agencia}")
-    public ResponseEntity<ContasBancarias> getAccountByAgency(@PathVariable int agencia) {
-        List<ContasBancarias> contasBancarias = accountBusiness.findByAgency(agencia);
+    @GetMapping(path = "/accountagency/{agencia}")
+    public ResponseEntity<ContaBancaria> getAccountByAgency(@PathVariable int agencia) {
+        List<ContaBancaria> contasBancarias = accountBusiness.findByAgency(agencia);
 
         if(contasBancarias.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
@@ -58,8 +58,8 @@ public class Controller {
     }
 
     @GetMapping(path = "/contachequeliberado/{value}")
-    public ResponseEntity<ContasBancarias> getAccountByOverdraft(@PathVariable int value) {
-        List<ContasBancarias> contasBancarias = accountBusiness.findByOverdraft(value);
+    public ResponseEntity<ContaBancaria> getAccountByOverdraft(@PathVariable int value) {
+        List<ContaBancaria> contasBancarias = accountBusiness.findByOverdraft(value);
 
         if (value==0 || value==1) {
             return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
