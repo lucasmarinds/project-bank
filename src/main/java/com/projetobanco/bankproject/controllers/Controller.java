@@ -1,5 +1,6 @@
 package com.projetobanco.bankproject.controllers;
 
+import com.projetobanco.bankproject.VO.ContaBancariaVO;
 import com.projetobanco.bankproject.business.AccountBusiness;
 import com.projetobanco.bankproject.entitys.ContaBancaria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class Controller {
     @Autowired
     private AccountBusiness accountBusiness;
 
+    private ContaBancariaVO contaBancariaVO;
+
 
 
     @GetMapping(path="/showall")
@@ -28,7 +31,7 @@ public class Controller {
     }
 
     @GetMapping(path = "/accountid/{id}")
-    public ResponseEntity<ContaBancaria> getAccountById(@PathVariable int id){
+    public ResponseEntity<ContaBancariaVO> getAccountById(@PathVariable int id){
         Optional<ContaBancaria> contasBancarias = accountBusiness.findById(id);
 
         if(!contasBancarias.isPresent()){
@@ -38,8 +41,9 @@ public class Controller {
     }
 
     @GetMapping(path = "/accountname/{nome}")
-    public ResponseEntity<ContaBancaria> getAccountByName(@PathVariable String nome){
+    public ResponseEntity<ContaBancariaVO> getAccountByName(@PathVariable String nome){
         List<ContaBancaria> contasBancarias = accountBusiness.findByName(nome);
+
 
         if(contasBancarias.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
@@ -48,9 +52,8 @@ public class Controller {
     }
 
     @GetMapping(path = "/accountagency/{agencia}")
-    public ResponseEntity<ContaBancaria> getAccountByAgency(@PathVariable int agencia) {
+    public ResponseEntity<ContaBancariaVO> getAccountByAgency(@PathVariable int agencia) {
         List<ContaBancaria> contasBancarias = accountBusiness.findByAgency(agencia);
-
         if(contasBancarias.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
         }
@@ -58,11 +61,10 @@ public class Controller {
     }
 
     @GetMapping(path = "/contachequeliberado/{value}")
-    public ResponseEntity<ContaBancaria> getAccountByOverdraft(@PathVariable int value) {
+    public ResponseEntity<ContaBancariaVO> getAccountByOverdraft(@PathVariable int value) {
         List<ContaBancaria> contasBancarias = accountBusiness.findByOverdraft(value);
-
-        if (value==0 || value==1) {
-            return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
+        if(!contasBancarias.isEmpty()){
+            return new ResponseEntity(contaBancariaVO.converterEntity((ContaBancaria) contasBancarias), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity(INVALID_VALUE,HttpStatus.BAD_REQUEST);
     }
