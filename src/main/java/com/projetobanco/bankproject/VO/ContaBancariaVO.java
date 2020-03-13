@@ -5,28 +5,26 @@ import com.projetobanco.bankproject.entitys.ContaBancaria;
 public class ContaBancariaVO {
 
     private String nomeUsuario;
-    private Integer numeroConta;
-    private Integer agenciaUsuario;
+    private String numeroContaEAgencia;
     private String chequeEspecialLiberado;
     private String saldoUsuario;
     private String chequeEspecial;
     private String taxa;
 
-    public ContaBancariaVO converterEntity(ContaBancaria contaBancaria){
-        ContaBancariaVO contaBancariaVO = new ContaBancariaVO();
-        contaBancariaVO.setAgenciaUsuario(contaBancaria.getAgenciaUsuario());
-        contaBancariaVO.setNomeUsuario(contaBancaria.getNomeUsuario());
-        contaBancariaVO.setNumeroConta(contaBancaria.getNumeroConta());
-        if(contaBancaria.getChequeEspecialLiberado() == 0){
-            contaBancariaVO.setChequeEspecialLiberado("Não Liberado");
-        }else if(contaBancaria.getChequeEspecialLiberado() == 1){
-            contaBancariaVO.setChequeEspecialLiberado("Liberado");
+    public ContaBancariaVO(final ContaBancaria conta) {
+
+        this.nomeUsuario = "\nNome: "+conta.getNomeUsuario();
+        this.numeroContaEAgencia = "\nConta/Agencia: "+conta.getNumeroConta()+"/"+conta.getAgenciaUsuario();
+        if(conta.getChequeEspecialLiberado()==1) {
+            this.chequeEspecialLiberado = "\nCheque Especial Liberado: LIBERADO";
+        }else if(conta.getChequeEspecialLiberado()==0){
+            this.chequeEspecialLiberado = "\nCheque Especial Liberado: NÃO LIBERADO";
         }
-        contaBancariaVO.setSaldoUsuario("R$ "+contaBancaria.getSaldoUsuario());
-        contaBancariaVO.setChequeEspecial(contaBancaria.getChequeEspecial());
-        contaBancariaVO.setTaxa(contaBancaria.getTaxa());
-        return contaBancariaVO;
+        this.saldoUsuario = "\nSaldo: R$ "+conta.getSaldoUsuario();
+        this.chequeEspecial = "\nCheque Especial: R$ "+conta.getChequeEspecial();
+        this.taxa = "\nTaxa: R$ "+conta.getTaxa();
     }
+
 
     public String getNomeUsuario() {
         return nomeUsuario;
@@ -36,20 +34,12 @@ public class ContaBancariaVO {
         this.nomeUsuario = nomeUsuario;
     }
 
-    public Integer getNumeroConta() {
-        return numeroConta;
+    public String getNumeroContaEAgencia() {
+        return numeroContaEAgencia;
     }
 
-    public void setNumeroConta(Integer numeroConta) {
-        this.numeroConta = numeroConta;
-    }
-
-    public Integer getAgenciaUsuario() {
-        return agenciaUsuario;
-    }
-
-    public void setAgenciaUsuario(Integer agenciaUsuario) {
-        this.agenciaUsuario = agenciaUsuario;
+    public void setNumeroContaEAgencia(String numeroContaEAgencia) {
+        this.numeroContaEAgencia = numeroContaEAgencia;
     }
 
     public String getChequeEspecialLiberado() {
@@ -83,4 +73,21 @@ public class ContaBancariaVO {
     public void setTaxa(String taxa) {
         this.taxa = taxa;
     }
+
+    public String toString(){
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("--------------CONTA--------------")
+                .append(getNomeUsuario())
+                .append(getNumeroContaEAgencia())
+                .append(getChequeEspecialLiberado())
+                .append(getSaldoUsuario())
+                .append(getChequeEspecial())
+                .append(getTaxa()+"\n");
+
+        return stringBuilder.toString();
+    }
+
+
+
 }

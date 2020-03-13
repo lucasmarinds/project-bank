@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/bankindex")
@@ -23,48 +24,32 @@ public class Controller {
 
     private ContaBancariaVO contaBancariaVO;
 
-
-
-    @GetMapping(path="/showall")
-    public  List<ContaBancaria> getAllUsers() {
-        return accountBusiness.findAll();
-    }
-
-    @GetMapping(path = "/accountid/{id}")
-    public ResponseEntity<ContaBancariaVO> getAccountById(@PathVariable int id){
-        Optional<ContaBancaria> contasBancarias = accountBusiness.findById(id);
-
-        if(!contasBancarias.isPresent()){
-            return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
-    }
-
     @GetMapping(path = "/accountname/{nome}")
     public ResponseEntity<ContaBancariaVO> getAccountByName(@PathVariable String nome){
-        List<ContaBancaria> contasBancarias = accountBusiness.findByName(nome);
-
-
-        if(contasBancarias.isEmpty()){
+        List<ContaBancaria> contas = accountBusiness.findByName(nome);
+        List<ContaBancariaVO> contasVO = contas.stream().map(conta -> new ContaBancariaVO(conta)).collect(Collectors.toList());
+        if(contasVO.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
+        return new ResponseEntity(contasVO.toString(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/accountagency/{agencia}")
     public ResponseEntity<ContaBancariaVO> getAccountByAgency(@PathVariable int agencia) {
-        List<ContaBancaria> contasBancarias = accountBusiness.findByAgency(agencia);
-        if(contasBancarias.isEmpty()){
+        List<ContaBancaria> contas = accountBusiness.findByAgency(agencia);
+        List<ContaBancariaVO> contasVO = contas.stream().map(conta -> new ContaBancariaVO(conta)).collect(Collectors.toList());
+        if(contasVO.isEmpty()){
             return new ResponseEntity(NOT_FOUND_ACCOUNT, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity(contasBancarias.toString(), HttpStatus.ACCEPTED);
+        return new ResponseEntity(contasVO.toString(), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "/contachequeliberado/{value}")
     public ResponseEntity<ContaBancariaVO> getAccountByOverdraft(@PathVariable int value) {
-        List<ContaBancaria> contasBancarias = accountBusiness.findByOverdraft(value);
-        if(!contasBancarias.isEmpty()){
-            return new ResponseEntity(contaBancariaVO.converterEntity((ContaBancaria) contasBancarias), HttpStatus.ACCEPTED);
+        List<ContaBancaria> contas = accountBusiness.findByOverdraft(value);
+        List<ContaBancariaVO> contasVO = contas.stream().map(conta -> new ContaBancariaVO(conta)).collect(Collectors.toList());
+        if(!contasVO.isEmpty()){
+            return new ResponseEntity(contasVO.toString(), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity(INVALID_VALUE,HttpStatus.BAD_REQUEST);
     }
