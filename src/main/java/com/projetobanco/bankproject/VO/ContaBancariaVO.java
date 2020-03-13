@@ -15,16 +15,24 @@ public class ContaBancariaVO {
 
         this.nomeUsuario = "\nNome: "+conta.getNomeUsuario();
         this.numeroContaEAgencia = "\nConta/Agencia: "+conta.getNumeroConta()+"/"+conta.getAgenciaUsuario();
+
         if(conta.getChequeEspecialLiberado()==1) {
             this.chequeEspecialLiberado = "\nCheque Especial Liberado: LIBERADO";
         }else if(conta.getChequeEspecialLiberado()==0){
             this.chequeEspecialLiberado = "\nCheque Especial Liberado: NÃO LIBERADO";
         }
+
         this.saldoUsuario = "\nSaldo: R$ "+conta.getSaldoUsuario();
         this.chequeEspecial = "\nCheque Especial: R$ "+conta.getChequeEspecial();
         this.taxa = "\nTaxa: R$ "+conta.getTaxa();
     }
 
+//    public Double novaTaxa(String valor) {
+//        double taxa;
+//        taxa = 0.2 * Double.parseDouble(valor);
+//        return taxa;
+//
+//    }
 
     public String getNomeUsuario() {
         return nomeUsuario;
