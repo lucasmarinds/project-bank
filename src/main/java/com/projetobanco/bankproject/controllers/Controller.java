@@ -22,8 +22,6 @@ public class Controller {
     @Autowired
     private AccountBusiness accountBusiness;
 
-    private ContaBancariaVO contaBancariaVO;
-
     @GetMapping(path = "/accountname/{nome}")
     public ResponseEntity<ContaBancariaVO> getAccountByName(@PathVariable String nome){
         List<ContaBancaria> contas = accountBusiness.findByName(nome);

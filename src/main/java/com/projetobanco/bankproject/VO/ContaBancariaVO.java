@@ -24,15 +24,16 @@ public class ContaBancariaVO {
 
         this.saldoUsuario = "\nSaldo: R$ "+conta.getSaldoUsuario();
         this.chequeEspecial = "\nCheque Especial: R$ "+conta.getChequeEspecial();
-        this.taxa = "\nTaxa: R$ "+conta.getTaxa();
+        this.taxa = "\nTaxa: R$ "+String.format("%.2f",novaTaxa(conta.getChequeEspecial()));
     }
 
-//    public Double novaTaxa(String valor) {
-//        double taxa;
-//        taxa = 0.2 * Double.parseDouble(valor);
-//        return taxa;
-//
-//    }
+    public Double novaTaxa(String valor) {
+        double taxa;
+        taxa = 0.02 * Double.parseDouble(valor.replace(".", "")
+                .replace(",","."));
+        return taxa;
+
+    }
 
     public String getNomeUsuario() {
         return nomeUsuario;

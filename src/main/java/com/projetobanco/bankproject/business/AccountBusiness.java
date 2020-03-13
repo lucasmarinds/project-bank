@@ -14,14 +14,6 @@ public class AccountBusiness {
     @Autowired
     AccountServiceImp accountServiceImp;
 
-    public List<ContaBancaria> findAll(){
-        return accountServiceImp.findAll();
-    }
-
-    public Optional<ContaBancaria> findById(int id){
-        return accountServiceImp.findById(id);
-    }
-
     public List<ContaBancaria> findByName(String nome){
         return accountServiceImp.findByName(nome);
     }

@@ -14,14 +14,6 @@ public class AccountServiceImp {
     @Autowired
     AccountRepository accountRepository;
 
-    public List<ContaBancaria> findAll(){
-        return (List<ContaBancaria>) accountRepository.findAll();
-    }
-
-    public Optional<ContaBancaria> findById(int id){
-        return accountRepository.findById(id);
-    }
-
     public List<ContaBancaria> findByName(String nome){
         return accountRepository.findByName(nome);
     }
